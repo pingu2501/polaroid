@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
@@ -9,6 +10,15 @@ const { authenticateToken } = require("./utilities");
 
 const User = require("./models/user.model");
 const PictureBook = require("./models/pictureBook.model");
+
+//render ip address
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
+
+fetch("https://ifconfig.me")
+  .then((res) => res.text())
+  .then((ip) => console.log(`Render's Outbound IP: ${ip}`))
+  .catch((err) => console.error("Error fetching IP:", err));
 
 mongoose
   .connect(process.env.URI)
