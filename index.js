@@ -164,8 +164,7 @@ app.patch("/edit-book/:id", authenticateToken, async (req, res) => {
         .json({ error: false, message: "Picture book not found" });
     }
 
-    const imagePlaceHolder =
-      "http://localhost:8000/assets/image-placeholder.jpg";
+    const imagePlaceHolder = `${process.env.BASE_URL}/assets/image-placeholder.jpg`;
     pictureBook.title = title;
     pictureBook.story = story;
     pictureBook.visitedLocation = visitedLocation;
@@ -255,7 +254,7 @@ app.post("/image-upload", upload.single("image"), async (req, res) => {
         .status(401)
         .json({ error: true, message: "No image uploaded" });
     }
-    const imageURL = `http://localhost:8000/uploads/${req.file.filename}`;
+    const imageURL = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
     return res.status(200).json({ imageURL });
   } catch (error) {
     return res.status(401).json({ error: true, message: error.message });
