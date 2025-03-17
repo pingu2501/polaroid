@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
@@ -7,7 +6,6 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const { authenticateToken } = require("./utilities");
-
 const User = require("./models/user.model");
 const PictureBook = require("./models/pictureBook.model");
 
@@ -15,7 +13,7 @@ const PictureBook = require("./models/pictureBook.model");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
-fetch("https://ifconfig.me")
+fetch("https://ifconfig.me/ip")
   .then((res) => res.text())
   .then((ip) => console.log(`Render's Outbound IP: ${ip}`))
   .catch((err) => console.error("Error fetching IP:", err));
@@ -34,6 +32,16 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({ origin: "*" }));
+
+//render ipv4
+app.get("/", (req, res) => {
+  console.log(req.headers); // Debug logs
+  const ip =
+    req.headers["x-forwarded-for"]?.split(",")[0] || // Client IP if behind a proxy
+    req.socket.remoteAddress; // Fallback
+
+  res.send(`Your IP: ${ip}`);
+});
 
 // create account api
 app.post("/create-account", async (req, res) => {
