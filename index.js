@@ -1,5 +1,4 @@
 require("dotenv").config();
-const config = require("./config.json");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
@@ -12,7 +11,7 @@ const User = require("./models/user.model");
 const PictureBook = require("./models/pictureBook.model");
 
 mongoose
-  .connect(config.connectionString)
+  .connect(process.env.URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((error) => {
     console.error("❌ MongoDB Connection Error:", error.message);
@@ -327,6 +326,6 @@ app.get("/filter-books", authenticateToken, async (req, res) => {
   }
 });
 
-app.listen("8000");
+app.listen(process.env.PORT);
 
 module.exports = app;
