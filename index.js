@@ -33,16 +33,6 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 
-//render ipv4
-app.get("/", (req, res) => {
-  console.log(req.headers); // Debug logs
-  const ip =
-    req.headers["x-forwarded-for"]?.split(",")[0] || // Client IP if behind a proxy
-    req.socket.remoteAddress; // Fallback
-
-  res.send(`Your IP: ${ip}`);
-});
-
 // create account api
 app.post("/create-account", async (req, res) => {
   const { fullName, email, password } = req.body;
